@@ -1,0 +1,373 @@
+openapi: "3.1.0"
+info:
+  title: "frogdream_neo API"
+  description: "frogdream_neo API"
+  version: "1.0.0"
+servers:
+- url: "https://fdapi.frogdream.xyz"
+paths:
+  /buy:
+    get:
+      description: ""
+      parameters:
+      - name: "nickName"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "email"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      - name: "promo"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "400":
+          description: "Bad Request"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Email is required"
+                Example#2:
+                  value: "NickName is required"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /callback:
+    get:
+      description: ""
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "/home"
+                Example#2:
+                  value: ""
+  /login:
+    get:
+      description: ""
+  /:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Hello World!"
+  /@me:
+    get:
+      description: ""
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Player"
+  /players/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PlayerDetailsResponse"
+  /top:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TopEntry"
+  /bank/cards:
+    get:
+      description: ""
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "403":
+          description: "Forbidden"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Card"
+  /bank/cards/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "403":
+          description: "Forbidden"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Card"
+    patch:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+      - name: "name"
+        in: "query"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "403":
+          description: "Forbidden"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /bank/cards/{id}/transfer:
+    post:
+      description: ""
+      parameters:
+      - name: "target"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "amount"
+        in: "query"
+        required: false
+        schema:
+          type: "integer"
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "integer"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "403":
+          description: "Forbidden"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+components:
+  schemas:
+    Map:
+      type: "object"
+      properties: {}
+    Map_String:
+      type: "string"
+    Player:
+      type: "object"
+      properties:
+        discordID:
+          type: "string"
+        nickName:
+          type: "string"
+        email:
+          type: "string"
+        reason:
+          type: "string"
+        bedrockNickName:
+          type: "string"
+        uuid:
+          type: "string"
+        lastNameChange:
+          type: "integer"
+          format: "int64"
+        _id:
+          $ref: "#/components/schemas/Player"
+      required:
+      - "discordID"
+      - "nickName"
+      - "email"
+      - "uuid"
+      - "_id"
+    PlayerDetailsResponse:
+      type: "object"
+      properties:
+        nickName:
+          type: "string"
+        skin:
+          type: "string"
+        head:
+          type: "string"
+        premium:
+          type: "boolean"
+        playTime:
+          type: "integer"
+          format: "int32"
+        description:
+          type: "string"
+        roles:
+          type: "array"
+          items:
+            type: "string"
+      required:
+      - "nickName"
+      - "skin"
+      - "head"
+      - "description"
+      - "roles"
+    TopEntry:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        value:
+          type: "integer"
+          format: "int32"
+      required:
+      - "name"
+    Card:
+      type: "object"
+      properties:
+        _id:
+          type: "integer"
+          format: "int32"
+        balance:
+          type: "integer"
+          format: "int32"
+        player:
+          type: "string"
+        name:
+          type: "string"
+        locked:
+          type: "boolean"
+        expiresAt:
+          type: "integer"
+          format: "int64"
+      required:
+      - "player"
+      - "name"
