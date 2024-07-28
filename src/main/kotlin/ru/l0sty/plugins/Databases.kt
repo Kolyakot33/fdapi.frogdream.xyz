@@ -67,13 +67,13 @@ sealed class CardColor {
     @SerialName("Color")
     data class Color(var value: String) : CardColor() {
         companion object {
-            private val allowedColors = listOf("cyan", "emerald", "red", "yellow", "black", "magenta", "blue", "green")
-            val Default = Color("green")
+            internal val allowedColors = listOf("cyan", "emerald", "red", "yellow")
+            internal val premiumColors = listOf("black", "magenta", "blue", "green")
         }
 
         init {
-            if (value !in allowedColors) {
-                value = "green"
+            if (value !in allowedColors && value !in premiumColors) {
+                value = "cyan"
             }
         }
     }
@@ -81,6 +81,11 @@ sealed class CardColor {
     @Serializable
     @SerialName("Image")
     data class Image(val url: String) : CardColor()
+
+    val Default = CardColor.Color("cyan")
+    val isPremium: Boolean
+        get() = this is Image || (this is Color && this.value in Color.premiumColors)
+
 }
 
 @Serializable
@@ -91,7 +96,7 @@ data class Card(
     var name: String,
     var locked: Boolean = false,
     var expiresAt: Long,
-    var color: CardColor = CardColor.Color.Default,
+    var color: CardColor = CardColor.Default,
 )
 
 @Serializable

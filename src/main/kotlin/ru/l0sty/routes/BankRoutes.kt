@@ -69,6 +69,9 @@ fun Route.patchCard() = patch("/cards/{id}") {
                 cards.updateOneById(card._id, setValue(Card::name, name))
             }
             patchData.color?.let { color ->
+                if (color.isPremium && false) {
+
+                }
                 cards.updateOneById(card._id, setValue(Card::color, color))
             }
             call.respond(HttpStatusCode.OK)

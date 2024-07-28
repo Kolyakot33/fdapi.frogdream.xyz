@@ -9,7 +9,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 
 }
-
 group = "ru.l0sty"
 version = "0.0.1"
 
