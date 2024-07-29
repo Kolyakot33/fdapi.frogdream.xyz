@@ -81,8 +81,9 @@ sealed class CardColor {
     @Serializable
     @SerialName("Image")
     data class Image(val url: String) : CardColor()
-
-    val Default = CardColor.Color("cyan")
+    companion object {
+        val Default = Color("cyan")
+    }
     val isPremium: Boolean
         get() = this is Image || (this is Color && this.value in Color.premiumColors)
 
