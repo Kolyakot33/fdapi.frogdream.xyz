@@ -20,6 +20,8 @@ import org.apache.commons.codec.binary.Hex
 import org.litote.kmongo.eq
 import org.litote.kmongo.or
 import ru.l0sty.config
+import ru.l0sty.databases.AwaitingPayment
+import ru.l0sty.databases.Player
 import ru.l0sty.plugins.*
 import java.util.*
 import javax.crypto.Mac

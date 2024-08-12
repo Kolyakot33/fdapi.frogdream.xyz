@@ -128,6 +128,10 @@ class UserSession(val discordId: String, val accessToken: String, val email: Str
 
 
 suspend inline fun PipelineContext<Unit, ApplicationCall>.tokenAuth(next: (PipelineContext<Unit, ApplicationCall>).() -> Unit) {
+    if (call.attributes.contains(DiscordIdKey)) {
+        next()
+        return
+    }
     val token = call.request.headers["Authorization"]?.removePrefix("Bearer ") ?: return run {
         call.respond(HttpStatusCode.Unauthorized, mapOf("error" to "No token provided"))
         finish()
@@ -141,6 +145,10 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.tokenAuth(next: (Pipel
 }
 
 suspend inline fun <T> ApplicationCall.tokenAuth(next: (ApplicationCall).() -> T) {
+    if (attributes.contains(DiscordIdKey)) {
+        next()
+        return
+    }
     val token = request.headers["Authorization"]?.removePrefix("Bearer ") ?: run {
         respond(HttpStatusCode.Unauthorized, mapOf("error" to "No token provided"))
         return

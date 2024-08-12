@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class Config(
     val easyDonateToken: String,
     val mongoUrl: String,
-    val discordToken: String
-
+    val discordToken: String,
+    val allowedVotes: List<String> = listOf()
 )

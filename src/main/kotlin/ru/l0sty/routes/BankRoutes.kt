@@ -7,10 +7,12 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.pipeline.*
 import kotlinx.serialization.Serializable
-import org.litote.kmongo.coroutine.updateOne
 import org.litote.kmongo.eq
 import org.litote.kmongo.inc
 import org.litote.kmongo.setValue
+import ru.l0sty.databases.Card
+import ru.l0sty.databases.CardColor
+import ru.l0sty.databases.Player
 import ru.l0sty.plugins.*
 
 

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Banking API
-  version: 1.0.0
+  title: Frogdream API
+  version: 0.1.4
 paths:
   /bank/cards:
     get:
@@ -60,10 +60,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Card'
         "400":
           description: Bad Request
           content:
@@ -98,10 +94,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: string
         "400":
           description: Bad Request
           content:
@@ -159,7 +151,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CardInfo'
+                  $ref: '#/components/schemas/Card'
         "404":
           description: Not Found
           content:
@@ -194,6 +186,42 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TopEntry'
+  /skin:
+    put:
+      summary: Update player skin
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /vote/{id}:
+    post:
+      summary: Vote for a player
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     Card:

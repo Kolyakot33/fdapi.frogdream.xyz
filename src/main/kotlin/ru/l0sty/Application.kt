@@ -41,6 +41,14 @@ fun Application.module() {
             }
             rateLimiter(limit = 5, refillPeriod = 60.seconds)
         }
+        register(RateLimitName("skinset")) {
+            requestKey { applicationCall ->
+                applicationCall.tokenAuth {
+                    return@requestKey applicationCall.discordId
+                }
+            }
+            rateLimiter(limit = 2, refillPeriod = 60.seconds)
+        }
     }
 
     configureSecurity()
@@ -53,7 +61,7 @@ fun Application.module() {
     install(CORS) {
         anyHost()
         allowMethod(HttpMethod.Patch)
-
+        allowMethod(HttpMethod.Put)
 
         allowHeader("Authorization")
         allowHeader("Content-type")

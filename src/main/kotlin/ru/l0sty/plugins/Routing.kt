@@ -8,6 +8,8 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.ratelimit.*
+import io.ktor.server.request.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -15,6 +17,11 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.eq
+import ru.l0sty.databases.Card
+import ru.l0sty.databases.CardColor
+import ru.l0sty.databases.Player
+import ru.l0sty.databases.Role
+import ru.l0sty.routes.voteRoutes
 
 val httpClient = HttpClient(CIO) {
     install(ContentNegotiation) {
@@ -74,6 +81,7 @@ object PlayTop {
 fun Application.configureRouting() {
     install(Resources)
     routing {
+        voteRoutes()
         get("/") {
             call.respondText("Hello World!")
         }
@@ -117,6 +125,22 @@ fun Application.configureRouting() {
                 call.respond(player)
             }
         }
+        rateLimit(RateLimitName("skinset")) {
+            put("/skin") {
+                tokenAuth {
+                    val player = players.findOne(Player::discordID eq call.discordId) ?: return@put run {
+                        call.respond(HttpStatusCode.NotFound, mapOf("error" to "Player not found"))
+                    }
+                    val skin = call.receiveText()
+                    val resp = httpClient.post("http://node.l0sty.ru:7010/skin/${player.uuid}") {
+                        setBody(skin)
+                    }
+                    call.respond(resp.status)
+
+                }
+            }
+        }
+
     }
 }
 
@@ -128,7 +152,7 @@ class PlayerDetailsResponse(
     var premium: Boolean,
     var playTime: Int,
     var description: String,
-    var roles: List<String>,
+    var roles: List<Role>,
     var isBanned: Boolean
 )
 
@@ -151,7 +175,7 @@ suspend fun detailedResponse(player: Player): PlayerDetailsResponse {
         false,
         PlayTop.get().firstOrNull { it.name == player.nickName }?.value ?: 0,
         "Not implemented",
-        listOf("Not implemented"),
+        player.roles.mapNotNull { roles.findOne(Role::id eq it) },
         player.isBanned
     )
 }

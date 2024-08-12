@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "2.0.0"
     id("io.ktor.plugin") version "2.3.10"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "8.3.0"
 
 }
 group = "ru.l0sty"
